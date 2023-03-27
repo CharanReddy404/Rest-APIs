@@ -1,25 +1,52 @@
-import logo from './logo.svg';
-import './App.css';
+import { Provider } from 'react-redux';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import Body from './components/Body';
+import Header from './components/Header';
 
-function App() {
+import ListAllProducts from './components/productPages/ListAllProducts';
+import CreateProduct from './components/productPages/CreateProduct';
+import EditProduct from './components/productPages/EditProduct';
+import store from './utils/store';
+import ViewProduct from './components/productPages/ViewProduct';
+
+const appRouter = createBrowserRouter([
+  {
+    path: '/',
+    element: <Body />,
+    children: [
+      {
+        path: '/',
+        element: <ListAllProducts />,
+      },
+      {
+        path: '/createProduct',
+        element: <CreateProduct />,
+      },
+      {
+        path: '/editProduct',
+        element: <EditProduct />,
+      },
+      {
+        path: '/allProducts',
+        element: <ListAllProducts />,
+      },
+      {
+        path: '/viewProduct',
+        element: <ViewProduct />,
+      },
+    ],
+  },
+]);
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='flex'>
+      <Provider store={store}>
+        <Header />
+        <RouterProvider router={appRouter} />
+      </Provider>
     </div>
   );
-}
+};
 
 export default App;
