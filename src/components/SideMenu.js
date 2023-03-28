@@ -26,6 +26,11 @@ const SideMenu = () => {
             List All Products
           </Link>
         </li>
+        <li className='py-2'>
+          <Link to='/test' onClick={() => toggleMenuHandler()}>
+            Test
+          </Link>
+        </li>
       </ul>
     </div>
   );
