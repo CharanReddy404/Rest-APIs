@@ -8,6 +8,7 @@ import CreateProduct from './components/productPages/CreateProduct';
 import EditProduct from './components/productPages/EditProduct';
 import store from './utils/store';
 import ViewProduct from './components/productPages/ViewProduct';
+import Test from './components/Test';
 
 const appRouter = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ const appRouter = createBrowserRouter([
       {
         path: '/viewProduct',
         element: <ViewProduct />,
+      },
+      {
+        path: '/test',
+        element: <Test />,
       },
     ],
   },
