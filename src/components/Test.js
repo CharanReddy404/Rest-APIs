@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const Test = () => {
   const data = [
@@ -6,62 +6,74 @@ const Test = () => {
       name: 'Ten Dollar',
       numericValue: 1000,
       code: 'USD_TEN_DOLLAR',
+      count: 0,
+    },
+    {
+      name: 'Fifty Dollar',
+      numericValue: 5000,
+      code: 'USD_FIFTY_DOLLAR',
+      count: 0,
     },
     {
       name: 'Hundred Dollar',
       numericValue: 10000,
       code: 'USD_HUNDRED_DOLLAR',
+      count: 0,
     },
   ];
 
-  const [state, setState] = useState({
-    numTenDollar: 0,
-    numHundredDollar: 0,
-    totalValue: 0,
-  });
+  const [state, setState] = useState(null);
 
-  const handleNumTenDollarChange = (event) => {
-    const value = parseInt(event.target.value) || 0;
-    setState((prevState) => ({ ...prevState, numTenDollar: value }));
-  };
+  const [total, setTotal] = useState(0);
 
-  const handleNumHundredDollarChange = (event) => {
-    const value = parseInt(event.target.value) || 0;
-    setState((prevState) => ({ ...prevState, numHundredDollar: value }));
+  useEffect(() => {
+    setState(data);
+  }, []);
+
+  const handleDollarChange = (e) => {
+    setState(() => {
+      return state.map((v) => {
+        if (v.code === e.target.name) {
+          v.count = Number(e.target.value);
+        }
+        return v;
+      });
+    });
   };
 
   const calculateTotalValue = () => {
-    const total =
-      state.numTenDollar * data[0].numericValue +
-      state.numHundredDollar * data[1].numericValue;
-    setState((prevState) => ({ ...prevState, totalValue: total }));
+    const totalValue = state.reduce((c, v) => {
+      return c + v.numericValue * v.count;
+    }, 0);
+
+    setTotal(totalValue);
   };
+
+  if (!state) return null;
 
   return (
     <div className='bg-white p-2'>
-      <label>Number of Ten Dollar Bills: </label>
-      <input
-        className='ml-2 mb-2 border'
-        type='number'
-        value={state.numTenDollar}
-        onChange={handleNumTenDollarChange}
-      />
-      <br />
-      <label>Number of Hundred Dollar Bills:</label>
-      <input
-        className='ml-2 mb-2 border'
-        type='number'
-        value={state.numHundredDollar}
-        onChange={handleNumHundredDollarChange}
-      />
-      <br />
+      {state.map((v, i) => (
+        <div key={i}>
+          <label>{v.name} </label>
+          <input
+            className='ml-2 mb-2 border'
+            type='number'
+            min={0}
+            name={v.code}
+            value={v.count === 0 ? '' : v.count}
+            onChange={handleDollarChange}
+          />
+          <br />
+        </div>
+      ))}
       <button
         className='bg-red-600 mb-2 p-1 text-white rounded-lg'
         onClick={calculateTotalValue}
       >
         Calculate Total Value
       </button>
-      <p>Total Value: ${state.totalValue / 100}</p>
+      <p>Total Value: ${total / 100}</p>
     </div>
   );
 };
