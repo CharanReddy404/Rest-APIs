@@ -6,19 +6,16 @@ const Test = () => {
       name: 'Ten Dollar',
       numericValue: 1000,
       code: 'USD_TEN_DOLLAR',
-      count: 0,
     },
     {
       name: 'Fifty Dollar',
       numericValue: 5000,
       code: 'USD_FIFTY_DOLLAR',
-      count: 0,
     },
     {
       name: 'Hundred Dollar',
       numericValue: 10000,
       code: 'USD_HUNDRED_DOLLAR',
-      count: 0,
     },
   ];
 
@@ -27,7 +24,11 @@ const Test = () => {
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
-    setState(data);
+    setState(
+      data.map((v) => {
+        return { ...v, count: 0 };
+      })
+    );
   }, []);
 
   const handleDollarChange = (e) => {
